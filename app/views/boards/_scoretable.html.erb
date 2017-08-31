@@ -35,7 +35,7 @@
         <% end %>
 
             <td><%= i += 1 %></td>
-            <% if @score && @score.id == score.id %>
+            <% if @score && @score.id == score.id && score.player == "--" %>
               <td>YOU</td>
             <% else %>
               <td><%= score.player %></td>

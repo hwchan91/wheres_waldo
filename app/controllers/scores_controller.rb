@@ -15,6 +15,7 @@ class ScoresController < ApplicationController
   end
 
   def update(existing_score)
+    @score = existing_score
     redirect(existing_score.update_attributes(player: params[:player]))
   end
 
