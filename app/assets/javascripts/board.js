@@ -1,6 +1,6 @@
 Paloma.controller('Boards', {
   show: function(){
-    let char_count, identified, identified_count, time, clicked, score_id;
+    var char_count, identified, identified_count, time, clicked, score_id;
     init();
 
     function init() {
@@ -15,7 +15,7 @@ Paloma.controller('Boards', {
     }
 
     function setBoardWidth() {
-      let board_width = $('.board img').width()
+      var board_width = $('.board img').width()
       $('.board').width(board_width)
     }
 
@@ -24,11 +24,11 @@ Paloma.controller('Boards', {
     }
 
     function checkClick(e) {
-      let board_offset, top, left;
+      var board_offset, top, left;
       board_offset = $('.board img').offset();
       top = e.pageY - board_offset.top;
       left = e.pageX - board_offset.left;
-      let query = {
+      var query = {
         board_id: $('.board').data('boardid'),
         top: top,
         left: left
@@ -110,7 +110,7 @@ Paloma.controller('Boards', {
       $(window).keydown(function(event){
         if( (event.keyCode == 13) && ($('#player').is(':focus')) ) {
           event.preventDefault();
-          let player = $('#player').val()
+          var player = $('#player').val()
           $.when(submitScore(player, "submit_name")).done(popupReturnHome());
         }
       });
@@ -119,7 +119,7 @@ Paloma.controller('Boards', {
     function saveScoreOnReturn() {
       $('#play_again').on('click', function(event) {
         event.preventDefault();
-        let player = $('#player').val()
+        var player = $('#player').val()
         submitScore(player, "root");
       })
     }
