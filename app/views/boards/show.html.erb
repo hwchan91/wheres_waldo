@@ -1,0 +1,32 @@
+<div class="board" data-boardid="<%= @board.id %>">
+  <div class="instruction">
+    Click on the board if you find a character
+  </div>
+  <div class="img_container">
+    <%= image_tag @board.url, height: '700' %>
+  </div>
+</div>
+
+<div class="char_table">
+  <div class="remaining_char_text">Remaining characters to find</div>
+  <div class="table_row">
+    <%= render @characters %>
+  </div>
+</div>
+
+<div class="modal">
+  <div class="modal_content">
+    <div class="modal_body"> <!-- This div is for positioning the popup  -->
+      <p>Congratulations! You found everyone in <span class="score"></span> seconds!</p>
+      <div class="form">
+        <%= form_for :score, url: '#', :html => { :id => "score" }, method: :post do |f| %>
+          <%= f.text_field(:player, placeholder: "Enter your name", class: "form-control", "aria-describedby"=>"basic-addon1", class: "form-control", id:"player") %>
+          <%= f.submit("submit", id: "submit", class: "btn btn-primary") %>
+        <% end %>
+      </div>
+      <%= link_to "Play another board!", 'boards_path', id: 'play_again', class: 'btn' %>
+      <%= link_to "Scoreboard", '#', id: 'scoreboard', class: 'btn' %>
+    </div>
+  </div>
+</div>
+<%#controller: :scores, action: :create %>

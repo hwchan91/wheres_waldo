@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  board: one
+  name: MyString
+  string: MyString
+  top: 1
+  left: 1
+
+two:
+  board: two
+  name: MyString
+  string: MyString
+  top: 1
+  left: 1

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  board: one
+  player: MyString
+  score: 9.99
+
+two:
+  board: two
+  player: MyString
+  score: 9.99

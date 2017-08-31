@@ -1,0 +1,11 @@
+<div class="board_row">
+  <div class="board_level"><%= link_to board.level, board %></div>
+  <div class="row board_with_score">
+    <div class="thumbnail_container">
+      <%= link_to image_tag(board.url), board %>
+    </div>
+    <div class="scoretable">
+      <%= render partial: "scoretable", :locals => { board: board } %>
+    </div>
+  </div>
+</div>

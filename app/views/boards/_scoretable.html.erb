@@ -1,0 +1,50 @@
+<div class="table_headers">
+  <table>
+    <colgroup>
+      <col span="1" style="width: 25%;">
+      <col span="1" style="width: 50%;">
+      <col span="1" style="width: 25%;">
+    </colgroup>
+    <tbody>
+      <tr>
+        <th>Ranking</th>
+        <th>Name</th>
+        <th>Solved in</th>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="table_container">
+  <div class="scrollable">
+  <table>
+    <%#= render partial: "score_row", collection: board.scores.sort_by(&:score), as: :score %>
+    <colgroup>
+      <col span="1" style="width: 25%;">
+      <col span="1" style="width: 50%;">
+      <col span="1" style="width: 25%;">
+    </colgroup>
+    <tbody>
+    <% scores = board.scores.sort_by(&:score) %>
+    <% i = 0 %>
+    <% if @page %>
+      <% scores.each do |score| %>
+        <% if @score && @score.id == score.id %>
+          <tr style="background-color: red; color: white" >
+        <% else %>
+          <tr>
+        <% end %>
+
+            <td><%= i += 1 %></td>
+            <% if @score && @score.id == score.id %>
+              <td>YOU</td>
+            <% else %>
+              <td><%= score.player %></td>
+            <% end %>
+            <td><%= score.score %> sec.</td>
+        </tr>
+      <% end %>
+    <% end %>
+    </tbody>
+  </table>
+  </div>
+</div>
