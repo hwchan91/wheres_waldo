@@ -5,6 +5,7 @@ class BoardsController < ApplicationController
   end
 
   def show
+    session.delete(:score_id)
     @board = Board.find(params[:id])
     @characters = @board.characters
     #session[:char_remaining] = @characters.map{&:name}
