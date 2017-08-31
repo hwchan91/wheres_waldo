@@ -146,18 +146,22 @@ Paloma.controller('Boards', {
     }
 
     function popupCloseListener() {
-      setTimeout(function() {
-        $('.close_popup_btn').show();
-        $('.close_popup_btn').on('click', function() {
-          $('.score_popup').remove();
-        });
-      }, 200)
+      setInterval(function() {
+        if ($('.close_popup_btn').length) {
+          $('.close_popup_btn').show();
+          $('.close_popup_btn').on('click', function() {
+            $('.score_popup').remove();
+          });
+        }
+      }, 100)
     }
 
     function popupReturnHome() {
-      setTimeout(function() {
-        $('.close_popup_btn').remove();
-        $('.score_popup').append($('<a href="/" class="btn" id="play_again">Play another board!</a>').css("margin-top", "20px"))
+      setInterval(function() {
+        if ($('.close_popup_btn').length) {
+          $('.close_popup_btn').remove();
+          $('.score_popup').append($('<a href="/" class="btn" id="play_again">Play another board!</a>').css("margin-top", "20px"))
+        }
       }, 200)
     }
 
