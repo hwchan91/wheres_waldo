@@ -111,7 +111,8 @@ Paloma.controller('Boards', {
         if( (event.keyCode == 13) && ($('#player').is(':focus')) ) {
           event.preventDefault();
           var player = $('#player').val()
-          $.when(submitScore(player, "submit_name")).done(popupReturnHome());
+          popupReturnHome();
+          submitScore(player, "submit_name");
         }
       });
     }
@@ -127,7 +128,8 @@ Paloma.controller('Boards', {
     function toScoreboard() {
       $('#scoreboard').on('click', function(event) {
         event.preventDefault();
-        $.when(submitScore('', "scoreboard")).done(popupCloseListener());
+        popupCloseListener();
+        submitScore('', "scoreboard");
       })
     }
 
