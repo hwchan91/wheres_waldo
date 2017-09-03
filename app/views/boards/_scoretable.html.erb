@@ -26,7 +26,7 @@
     <tbody>
     <% scores = board.scores.sort_by(&:score) %>
     <% i = 0 %>
-    <% if @page %>
+
       <% scores.each do |score| %>
         <% if @score && @score.id == score.id %>
           <tr style="background-color: red; color: white" >
@@ -43,7 +43,7 @@
             <td><%= score.score %> sec.</td>
         </tr>
       <% end %>
-    <% end %>
+
     </tbody>
   </table>
   </div>

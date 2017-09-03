@@ -1,35 +1,32 @@
 class ScoresController < ApplicationController
   def create
-    @page = params[:link_to]
-    @board = Board.find(params[:board_id].to_i)
-    existing_score = @board.scores.find_by(id: session[:score_id]) if session[:score_id]
-
-    if existing_score
-      update(existing_score)
+    if params[:score_id]
+      update
     else
+      @board = Board.find(params[:board_id])
       @score = @board.scores.new(player: params[:player], score: params[:score])
-      @score.save  #needed to save once first to obtain id
-      session[:score_id] = @score.id
-      redirect(@score.save)
+      if @score.save
+        render json: { score_id: @score.id }
+      else
+        render json: { errors: @score.errors.full_messages }, :status => 422
+      end
     end
   end
 
-  def update(existing_score)
-    @score = existing_score
-    redirect(existing_score.update_attributes(player: params[:player]))
-  end
-
-  def redirect(condition)
-    if condition
-      if @page == "scoreboard" or @page == "submit_name"
+  def update
+    @board = Board.find(params[:board_id])
+    @score = Score.find(params[:score_id])
+    if @score.update_attributes(player: params[:player])
+      if params[:popup] == "true"
         popup
       else
-        render js: "window.location.pathname='#{boards_path}'"
+        redirect_to boards_path
       end
     else
-      render :json => { :errors => @score.errors.full_messages }, :status => 422
+      render json: { errors: @score.errors.full_messages }, :status => 422
     end
   end
+
 
   def popup
     respond_to do |format|

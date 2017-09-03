@@ -34,14 +34,14 @@ Paloma.controller('Boards', {
         left: left
       }
       console.log("clicked", "top", top, "left", left)
-      highlightClicked(top, left);
       sendQuery(query);
     }
 
     function sendQuery(query) {
       $.getJSON( "/check_char.json", query).done(function(data) {
         console.log(data);
-        if (data) {
+        if (data && !(data.name in identified)) {
+          highlightClicked(query.top, query.left, false);
           identified[data.name] = true;
           identified_count = Object.keys(identified).length
           if (identified_count == char_count) {
@@ -53,9 +53,7 @@ Paloma.controller('Boards', {
             $('.' + data.name).hide('slow')
           }
         } else {
-           setTimeout(function(){
-            $('.selector-circle').last().fadeOut();
-          }, 450);
+          highlightClicked(query.top, query.left, true);
         }
       })
     }
@@ -73,11 +71,12 @@ Paloma.controller('Boards', {
       $('.board img').off('click', checkClick);
       time = time.toFixed(2);
       console.log("Found all in " + time + " s");
+      submitScore('', 'false')
       displayForm();
       saveScore();
     }
 
-    function highlightClicked(top, left) {
+    function highlightClicked(top, left, fadeout) {
       if (!clicked) {
         toggleClicked();
         var circle = $("<div class='selector-circle' style='left:" + left +"px; top:" + top + "px'></div>")
@@ -85,6 +84,11 @@ Paloma.controller('Boards', {
         setTimeout(function() {
           circle.addClass("scale");
         }, 50);
+        if (fadeout) {
+          setTimeout(function() {
+             circle.fadeOut();
+           }, 450);
+        }
       }
     }
 
@@ -110,38 +114,57 @@ Paloma.controller('Boards', {
       $(window).keydown(function(event){
         if( (event.keyCode == 13) && ($('#player').is(':focus')) ) {
           event.preventDefault();
-          var player = $('#player').val()
-          popupReturnHome();
-          submitScore(player, "submit_name");
+          updateScore(true);
         }
       });
-    }
-
-    function saveScoreOnReturn() {
-      $('#play_again').on('click', function(event) {
-        event.preventDefault();
-        var player = $('#player').val()
-        submitScore(player, "root");
-      })
     }
 
     function toScoreboard() {
       $('#scoreboard').on('click', function(event) {
         event.preventDefault();
-        popupCloseListener();
-        submitScore('', "scoreboard");
+        //popupCloseListener();
+        updateScore(true);
       })
     }
 
-    function submitScore(player_name, page) {
+    function saveScoreOnReturn() {
+      $('#play_again').on('click', function(event) {
+        event.preventDefault();
+        updateScore(false);
+      })
+    }
+
+    function updateScore(display_popup) {
+      var player = $('#player').val()
+      submitScore(player, display_popup)
+    }
+
+    function popupScoreboard() {
+      console.log("getting popup")
+      data = {
+        board_id: $('.board').data('boardid'),
+        score_id: score_id
+      }
+      $.get( "/popup_score", data)
+    }
+
+    function submitScore(player_name, display_popup) {
       score = {
         board_id: $('.board').data('boardid'),
         score: time,
         player: player_name,
-        link_to: page
+        score_id: score_id,
+        //link_to: page,
+        popup: display_popup
       }
+      if (display_popup == "true") { $('.modal_body').text("") }
       $.post( "/save_score", score).done(function(data) {
-        console.log("score saved")
+        score_id = data.score_id
+        console.log("score saved, score_id: ", score_id)
+      }).fail(function(xhr, status) {
+          alert( "Sorry, there was a problem!" );
+          console.log( "Status: " + status );
+          console.dir( xhr );
       })
     }
 
@@ -156,14 +179,14 @@ Paloma.controller('Boards', {
       }, 100)
     }
 
-    function popupReturnHome() {
-      setInterval(function() {
-        if ($('.close_popup_btn').length) {
-          $('.close_popup_btn').remove();
-          $('.score_popup').append($('<a href="/" class="btn" id="play_again">Play another board!</a>').css("margin-top", "20px"))
-        }
-      }, 200)
-    }
+//    function popupReturnHome() {
+//      setInterval(function() {
+//        if ($('.close_popup_btn').length) {
+//          $('.close_popup_btn').remove();
+//          $('.score_popup').append($('<a href="/" class="btn" id="play_again">Play another board!</a>').css("margin-top", "20px"))
+//        }
+//      }, 200)
+//    }
 
 
 
